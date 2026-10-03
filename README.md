@@ -108,6 +108,17 @@ python app.py
 
 Open <http://127.0.0.1:5000> in your browser. For production-style local use, set a strong `SECRET_KEY` environment variable before starting the app.
 
+## Deploy to Render
+
+This repository includes a `render.yaml` Blueprint configuration. To publish the Flask app:
+
+1. Sign in to [Render](https://render.com/) and choose **New** → **Blueprint**.
+2. Connect the `GopichandGunda/Online-Examination-Assessment-System` GitHub repository.
+3. Review the service configuration and deploy. Render installs `requirements.txt`, generates a private `SECRET_KEY`, and starts the app with Gunicorn.
+4. When deployment finishes, open the `onrender.com` URL shown for the service.
+
+The included app uses SQLite for beginner-friendly local use. Render's default filesystem is temporary, so changes to exams, users, and results may be lost after a restart or redeploy. For persistent production data, use a persistent disk or migrate the application to PostgreSQL before real users rely on it. The sample administrator credentials are public demo credentials and must not be used for a production deployment.
+
 ## Sample login credentials
 
 | Role | Email | Password |
@@ -134,7 +145,7 @@ The directory is intentionally ready for screenshots without adding generated bi
 - Email verification and password reset.
 - Question banks with randomization and negative marking.
 - CSV/PDF result exports.
-- CSRF tokens and a production WSGI deployment configuration.
+- CSRF tokens and production-grade account management.
 - More detailed answer review and topic-level analytics.
 - Optional PostgreSQL support for larger installations.
 
