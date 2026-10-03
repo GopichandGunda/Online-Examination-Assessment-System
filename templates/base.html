@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Examwise{% endblock %} | Online Examination & Assessment System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <nav class="topbar">
+    <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">E</span><span>Examwise</span></a>
+    {% if current_user %}
+      <div class="topbar-actions"><span class="user-chip">{{ current_user.name }}</span><a class="button button-ghost" href="{{ url_for('logout') }}">Sign out</a></div>
+    {% else %}<a class="button button-primary" href="{{ url_for('login') }}">Sign in</a>{% endif %}
+  </nav>
+  <div class="page-shell">
+    {% if current_user %}
+    <aside class="sidebar">
+      <div class="sidebar-label">Workspace</div>
+      {% if current_user.role == 'admin' %}
+        <a href="{{ url_for('admin_dashboard') }}">Overview</a><a href="{{ url_for('manage_exams') }}">Examinations</a><a href="{{ url_for('users') }}">Students</a><a href="{{ url_for('admin_results') }}">Results</a><a href="{{ url_for('statistics') }}">Statistics</a>
+      {% else %}
+        <a href="{{ url_for('student_dashboard') }}">My dashboard</a><a href="{{ url_for('exams') }}">Available exams</a><a href="{{ url_for('results') }}">Result history</a>
+      {% endif %}
+      <div class="sidebar-bottom"><span class="role-dot"></span>{{ current_user.role|capitalize }} account</div>
+    </aside>
+    {% endif %}
+    <main class="content {% if not current_user %}content-public{% endif %}">
+      {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash flash-{{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
